@@ -1,0 +1,191 @@
+{
+  "info": {
+    "_postman_id": "54c1babb-3bbb-4bbc-8aea-f11d2bc96900",
+    "name": "sink-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Schema key",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData =  pm.response.json();",
+              "",
+              "console.log(jsonData.id);",
+              "postman.setEnvironmentVariable(\"key_schema_id\", jsonData.id);",
+              "",
+              "postman.setNextRequest(\"Save product\");"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.schemaregistry.v1+json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"schema\": \"{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"ProductsEventPrivateKey\\\",\\\"namespace\\\":\\\"apps.micros.library\\\",\\\"doc\\\":\\\"Example key\\\",\\\"fields\\\":[{\\\"name\\\":\\\"id\\\",\\\"type\\\":\\\"long\\\",\\\"doc\\\":\\\"Key identifier\\\"}]}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9081/subjects/apps.library.products.event.private.v0.application.cpd-key/versions",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9081",
+          "path": [
+            "subjects",
+            "apps.library.products.event.private.v0.application.cpd-key",
+            "versions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Schema Value",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData =  pm.response.json();",
+              "",
+              "console.log(jsonData.id);",
+              "postman.setEnvironmentVariable(\"value_schema_id\", jsonData.id);",
+              "",
+              "postman.setNextRequest(\"Save product\");"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "application/vnd.schemaregistry.v1+json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"schema\": \"{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"ProductsEventPrivateValue\\\",\\\"namespace\\\":\\\"apps.micros.library\\\",\\\"doc\\\":\\\"Parent event for a demosbatch3\\\",\\\"fields\\\":[{\\\"name\\\":\\\"eventType\\\",\\\"type\\\":{\\\"type\\\":\\\"enum\\\",\\\"name\\\":\\\"EventTypeV2\\\",\\\"namespace\\\":\\\"com.mercadona.commons.architecture\\\",\\\"doc\\\":\\\"Event type\\\",\\\"symbols\\\":[\\\"CREATE\\\",\\\"UPDATE\\\",\\\"UPSERT\\\",\\\"DELETE\\\",\\\"TIMER\\\"],\\\"default\\\":\\\"CREATE\\\"}},{\\\"name\\\":\\\"metadata\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"MetadataMicroV1\\\",\\\"namespace\\\":\\\"com.mercadona.commons.architecture\\\",\\\"doc\\\":\\\"Metadata event information for internal topics\\\",\\\"fields\\\":[{\\\"name\\\":\\\"dateTimeCreated\\\",\\\"type\\\":{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"},\\\"doc\\\":\\\"Date and time created\\\"},{\\\"name\\\":\\\"producerApp\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Application starting the transaction\\\",\\\"default\\\":null},{\\\"name\\\":\\\"correlationId\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Transaction Identificador. Correlation identifier\\\",\\\"default\\\":null},{\\\"name\\\":\\\"eventId\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Event identifier\\\",\\\"default\\\":null},{\\\"name\\\":\\\"origin\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Application creating the event\\\",\\\"default\\\":null},{\\\"name\\\":\\\"target\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Application consuming the event\\\",\\\"default\\\":null},{\\\"name\\\":\\\"serializeVersion\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"],\\\"doc\\\":\\\"Serialize version of the payload values p.e. date format\\\",\\\"default\\\":null},{\\\"name\\\":\\\"mapEntry\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"map\\\",\\\"values\\\":{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"},\\\"avro.java.string\\\":\\\"String\\\",\\\"default\\\":{}}],\\\"doc\\\":\\\"map values\\\",\\\"default\\\":null}]}],\\\"doc\\\":\\\"Metadata information\\\",\\\"default\\\":null},{\\\"name\\\":\\\"payload\\\",\\\"type\\\":{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"ExampleEvent\\\",\\\"doc\\\":\\\"Example event\\\",\\\"fields\\\":[{\\\"name\\\":\\\"id\\\",\\\"type\\\":\\\"long\\\",\\\"doc\\\":\\\"Key\\\"},{\\\"name\\\":\\\"name\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Example name\\\",\\\"default\\\":null},{\\\"name\\\":\\\"description\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Example description\\\",\\\"default\\\":null},{\\\"name\\\":\\\"creationTime\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\",\\\"logicalType\\\":\\\"offset-date-time\\\"}],\\\"doc\\\":\\\"Example date creation\\\",\\\"default\\\":null},{\\\"name\\\":\\\"identificationType\\\",\\\"type\\\":{\\\"type\\\":\\\"enum\\\",\\\"name\\\":\\\"IdentificationTypesEnum\\\",\\\"symbols\\\":[\\\"DNI\\\",\\\"NIE\\\"]},\\\"doc\\\":\\\"Identification type\\\"},{\\\"name\\\":\\\"identification\\\",\\\"type\\\":[\\\"null\\\",{\\\"type\\\":\\\"string\\\",\\\"avro.java.string\\\":\\\"String\\\"}],\\\"doc\\\":\\\"Example identification\\\",\\\"default\\\":null},{\\\"name\\\":\\\"numberOfDaysInWeek\\\",\\\"type\\\":\\\"int\\\",\\\"doc\\\":\\\"Number of days in weeek\\\"}]}}]}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9081/subjects/apps.library.products.event.private.v0.application.cpd-value/versions",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9081",
+          "path": [
+            "subjects",
+            "apps.library.products.event.private.v0.application.cpd-value",
+            "versions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Kafka Post",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set (\"randomNum\", _.random (0,1000000));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "accept": true,
+          "content-type": true
+        }
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "password",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "username",
+              "value": "kafka_demoscna",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "application/vnd.kafka.avro.v2+json"
+          },
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/vnd.kafka.v2+json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"key_schema_id\": {{key_schema_id}},\n    \"value_schema_id\": {{value_schema_id}},\n    \"records\": [\n        {\n            \"key\": {\n                \"id\": 5260817873975054172\n            },\n            \"value\": {\n                \"eventType\": \"CREATE\",\n                \"metadata\": null,\n                \"payload\": {\n                    \"id\": {{randomNum}},\n                    \"name\": {\n                        \"string\": \"The Example\"\n                    },\n                    \"description\": {\n                        \"string\": \"A simple example description\"\n                    },\n                    \"creationTime\": {\n                        \"string\": \"2019-08-03T16:20:17.717+01:00\"\n                    },\n                    \"identificationType\": \"NIE\",\n                    \"identification\": {\n                        \"string\": \"Y6713575G\"\n                    },\n                    \"numberOfDaysInWeek\": 7\n                }\n            }\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9082/topics/apps.library.products.event.private.v0.application.cpd",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9082",
+          "path": [
+            "topics",
+            "apps.library.products.event.private.v0.application.cpd"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "randomNum",
+      "value": 253396
+    }
+  ]
+}

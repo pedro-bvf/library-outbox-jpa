@@ -1,0 +1,17 @@
+networks:
+  local:
+    name: my-web-network
+
+services:
+
+  postgres16:
+    image: postgres:16
+    hostname: postgres
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: books
+    ports:
+      - "5433:5432"
+    networks:
+      - local

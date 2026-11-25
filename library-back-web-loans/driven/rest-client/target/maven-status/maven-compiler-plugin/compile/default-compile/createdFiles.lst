@@ -1,0 +1,10 @@
+com/mercadona/library/loans/driven/clients/mapper/BookRestClientMapperImpl.class
+com/mercadona/library/loans/driven/clients/adapter/BooksRestClientAdapter.class
+com/mercadona/library/loans/driven/clients/client/BooksApiWebClient.class
+com/mercadona/library/loans/driven/clients/mapper/BookRestClientMapper.class
+com/mercadona/library/loans/driven/clients/dto/AuthorResource.class
+com/mercadona/library/loans/driven/clients/dto/PublisherResource.class
+com/mercadona/library/loans/driven/clients/dto/BookResource.class
+com/mercadona/library/loans/driven/clients/dto/BookResourceCollectionResponse.class
+com/mercadona/library/loans/driven/clients/dto/Pagination.class
+com/mercadona/library/loans/driven/clients/dto/BookResourceCollection.class

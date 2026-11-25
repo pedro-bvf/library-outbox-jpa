@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>library-back-snk-availability-boot</artifactId>
+  <packaging>jar</packaging>
+  <name>library-back-snk-availability-boot</name>
+
+  <parent>
+    <groupId>com.mercadona.library.availability</groupId>
+    <artifactId>library-back-snk-availability</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.mercadona.library.availability</groupId>
+      <artifactId>library-back-snk-availability-kafka-consumer</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mercadona.library.availability</groupId>
+      <artifactId>library-back-snk-availability-postgres-repository</artifactId>
+    </dependency>
+
+    <!-- Needed for the actuator's web endpoints; availability has no REST API module of its own -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Provides support to package and run applications "in-place" -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

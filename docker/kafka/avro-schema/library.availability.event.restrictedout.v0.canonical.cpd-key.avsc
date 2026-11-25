@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "BookAvailabilityEventKey",
+  "namespace": "com.mercadona.fwk.sbo.library.book",
+  "fields": [
+    {
+      "name": "publicId",
+      "type": "long"
+    }
+  ]
+}

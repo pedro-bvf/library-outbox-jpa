@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: library-back-web-books
+  kafka:
+    bootstrap-servers: ${BOOTSTRAP_SERVERS:localhost:29092}
+    producer:
+      acks: all
+      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:9081}
+
+  flyway:
+    locations: classpath:migration/versions
+    baseline-on-migrate: true
+    baseline-version: 0
+
+  datasource:
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 30000
+      max-lifetime: 2000000
+      connection-timeout: 30000
+
+  jpa:
+    open-in-view: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: false
+
+books:
+  kafka:
+    topic: library.availability.event.restrictedout.v0.canonical.cpd
+
+# Actuator endpoints configuration
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ info, health, metrics, prometheus ]
+
+
+server:
+  port: 8080

@@ -1,0 +1,99 @@
+networks:
+  local:
+    name: my-sink-network
+
+services:
+
+  kafka:
+    image: confluentinc/cp-kafka:7.9.3
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+      - "9991:9991"
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 101
+      # random cluster ID used for formatting LOG_DIR for KRaft
+      CLUSTER_ID: 'MfpuIebhQ8yO8f-_Q5eDeA'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '101@kafka:29093'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_JMX_PORT: 9991
+      # Listener interno (contenedores) en 9092 y externo (host) en 19092
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092'
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:9092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'false'
+    networks:
+      - local
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.9.3
+    hostname: schema-registry
+    networks:
+      - local
+    ports:
+      - "9081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:9092'
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+      SCHEMA_REGISTRY_MODE_MUTABILITY: "true"
+    depends_on:
+      - kafka
+
+  kpow:
+    image: docker.artifactory.gcp.mercadona.com/informatica-del-dato/integrations/eda/kafkatools/kpowlocal:latest
+    container_name: kpow
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka
+      - schema-registry
+    networks:
+      - local
+
+  postgres16:
+    image: postgres:16
+    hostname: postgres
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: examples
+    ports:
+      - "5434:5432"
+    networks:
+      - local
+
+  init-kafka:
+    image: confluentinc/cp-kafka:7.9.3
+    depends_on:
+      - kpow
+    entrypoint: [ '/bin/sh', '-c' ]
+    volumes:
+      - ./kafka:/tmp/kafka
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:9092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic library.availability.event.restrictedout.v0.canonical.cpd --replication-factor 1 --partitions 1
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:9092 --list
+
+      echo -e 'Creating Schemas'
+      cd /tmp/kafka
+      ./register-schemas.sh
+      "
+    networks:
+      - local

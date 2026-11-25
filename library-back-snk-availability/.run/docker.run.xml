@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="docker" type="docker-deploy" factoryName="docker-compose.yml" server-name="Podman Desktop">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="sourceFilePath" value="devops/docker/docker-compose.yaml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,417 @@
+openapi: 3.0.1
+info:
+  title: Quickstart service Demo
+  description: API para gestión de préstamos de usuarios
+  version: 5.0.0
+
+paths:
+  /loans:
+    post:
+      tags:
+        - loans
+      summary: Crear un préstamo
+      description: Crea un nuevo préstamo (Loan) en el sistema.
+      operationId: createLoan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanResourceRequest'
+      responses:
+        201:
+          description: Préstamo creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResourceResponse'
+        400:
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+
+  /loans/{loanId}:
+    get:
+      tags:
+        - loans
+      summary: Obtener un préstamo por ID
+      description: Recupera un préstamo (Loan) específico utilizando su ID.
+      operationId: getLoanById
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: ID del préstamo a recuperar
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Préstamo recuperado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResourceResponse'
+        400:
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Préstamo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+
+  /loans/{loanId}/cancel:
+    post:
+      tags:
+        - loans
+      summary: Cancelar un préstamo por ID
+      description: Cancela un préstamo (Loan) específico utilizando su ID.
+      operationId: cancelLoanById
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: ID del préstamo a cancelar
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Préstamo cancelado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResourceResponse'
+        400:
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Préstamo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+
+  /loans/{loanId}/return:
+    post:
+      tags:
+        - loans
+      summary: Devolver un préstamo por ID
+      description: Marca un préstamo (Loan) específico como devuelto utilizando su ID.
+      operationId: returnLoanById
+      parameters:
+        - name: loanId
+          in: path
+          required: true
+          description: ID del préstamo a devolver
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Préstamo devuelto correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResourceResponse'
+        400:
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Préstamo no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Error interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+
+  /books:
+    get:
+      tags:
+        - books
+      summary: Método para recuperar una colección de libros
+      description: Este método recupera una colección de libros
+      operationId: getBookCollection
+      parameters:
+        - name: firstPage
+          in: query
+          description: Página solicitada (la primera página es la 1). Si no se especifica, se usa 1. [No puede ser negativa ni cero]
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          description: Número de elementos recuperados por página. Si no se especifica, se usa 10. [No puede ser menor que 1]
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: sort
+          in: query
+          description: 'Orden de la consulta. [sort=+id] ordena ascendente por id, o [sort=-id] descendente por id. Por defecto sin ordenar.'
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookCollectionResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Books
+
+components:
+  schemas:
+    LoanResourceResponse:
+      title: LoanResourceResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/LoanResource'
+
+    LoanResource:
+      title: LoanResource
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        publicId:
+          type: integer
+          format: int64
+        customer:
+          $ref: '#/components/schemas/CustomerResource'
+        books:
+          type: array
+          items:
+            type: string
+            format: uuid
+        bookingDate:
+          type: string
+          format: date-time
+        bookingExpirationDate:
+          type: string
+          format: date
+        returnedDate:
+          type: string
+          format: date-time
+
+    LoanResourceRequest:
+      title: LoanResourceRequest
+      type: object
+      required:
+        - customerId
+        - bookIds
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        bookIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+
+    BookCollectionResponse:
+      title: BookCollectionResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BookCollection'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    BookCollection:
+      title: BookCollection
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookResource'
+
+    BookResource:
+      title: BookResource
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        publicId:
+          type: integer
+          format: int64
+        title:
+          type: string
+        edition:
+          type: string
+        coverUrl:
+          type: string
+        epubUrl:
+          type: string
+        isDigital:
+          type: boolean
+        languages:
+          type: string
+        price:
+          type: number
+          format: decimal
+        authors:
+          type: array
+          items:
+            type: string
+        publisher:
+          type: string
+
+    CustomerResource:
+      title: CustomerResource
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        publicId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        birthday:
+          type: string
+          format: date
+        address:
+          type: string
+        phone:
+          type: integer
+        cardImageUrl:
+          type: string
+
+    Pagination:
+      type: object
+      properties:
+        requestedPage:
+          type: integer
+          format: int32
+        requestedSize:
+          type: integer
+          format: int32
+        retrievedResults:
+          type: integer
+          format: int32
+        totalResults:
+          type: integer
+          format: int64
+        nextPage:
+          type: string
+        previousPage:
+          type: string
+
+    ErrorResourceResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResource'
+
+    ErrorResource:
+      title: ErrorResource
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
+
+  securitySchemes:
+    aad:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ""
+          scopes: { }
+    adfs:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ""
+          scopes: { }

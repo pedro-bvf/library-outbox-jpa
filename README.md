@@ -1,0 +1,5 @@
+# Library Outbox JPA
+
+Course variant with the same three services and the original REST contracts. In books, BookOutboxAdapter writes the event in the same transaction as the book. BookOutboxPublisher reads the new table with row locking, publishes to the original Avro topic, and marks the row as processed (`processed_at`) after confirmation. A failure after sending may cause redelivery.
+
+Uses a local database dedicated to this variant. Flyway migration 1.0.2 creates the events table. Compose uses the course's ports. In the docker directory, start the infrastructure with `docker compose up -d postgres16 init-kafka`. Build each service with Java 21 and `mvn clean package`, then start the boot module's JAR with the local profile. In availability, BookConsumerAdapter uses Spring Kafka's @KafkaListener to process Avro events and delete books when it receives a tombstone. The build keeps the course's internal dependencies out of the outbox and the Kafka consumer, and requires the same Maven access.

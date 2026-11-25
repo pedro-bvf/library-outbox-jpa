@@ -1,0 +1,1528 @@
+openapi: 3.0.1
+info:
+  title: Books API
+  version: 1.0.0
+  description: API for managing books, authors, and publishers.
+tags:
+  - name: Books
+    description: Operations related to books
+  - name: Authors
+    description: Operations related to authors
+  - name: Publishers
+    description: Operations related to publishers
+paths:
+
+  # Books Endpoint
+
+  /books:
+
+    get:
+      summary: Get list of books
+      description: This method retrieves a paginated collection of books available in the system.
+      operationId: getBookResourceCollection
+      tags:
+        - Books
+      parameters:
+        - name: firstPage
+          in: query
+          description: Requested page (first page is page 1). If not specified 1 is
+            used. [Cannot be negative or zero]
+          schema:
+            $ref: '#/components/schemas/firstPage'
+        - name: pageSize
+          in: query
+          description: Number of retrieved elements per page. if not specified 10 is
+            used. [Cannot be less than 1]
+          schema:
+            $ref: '#/components/schemas/pageSize'
+        - name: sort
+          in: query
+          description: 'Sort of the query. [sort=+id] will order asc by id, or [sort=-id] desc by id). Default unsorted.'
+          schema:
+            $ref: '#/components/schemas/sort'
+      responses:
+        200:
+          description: List of books
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResourceCollectionResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Books
+
+    post:
+      summary: Create a book
+      description: This method allows you to create a new book in the system with the information provided in the request body.
+      operationId: createBook
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookResourceRequest'
+      responses:
+        201:
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_POST_Books
+
+  /books/{id}:
+
+    get:
+      summary: Get book by ID
+      description: Retrieves the details of a specific book using its unique identifier.
+      operationId: getBookById
+      tags:
+        - Books
+      parameters:
+        - name: id
+          description: Private Book identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/bookId'
+      responses:
+        200:
+          description: Book details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Books
+
+    put:
+      summary: Update book by ID
+      description: Allows you to modify the information of an existing book using its unique identifier.
+      operationId: updateBookById
+      tags:
+        - Books
+      parameters:
+        - name: id
+          description: Private Book identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/bookId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookResourceRequest'
+      responses:
+        200:
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_POST_Books
+
+    delete:
+      summary: Delete book by ID
+      description: Deletes a specific book from the system using its unique identifier.
+      operationId: deleteBookById
+      tags:
+        - Books
+      parameters:
+        - name: id
+          description: Private Book identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/bookId'
+      responses:
+        204:
+          description: Book deleted
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_DELETE_Books
+
+  /books/publicIds:
+    post:
+      summary: Search books by array of publicId
+      description: Allows you to retrieve a collection of books filtered by an array of public identifiers.
+      operationId: searchBooksByPublicIds
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publicIds:
+                  $ref: '#/components/schemas/publicIds'
+      responses:
+        200:
+          description: Books found by publicId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResourceCollection'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_SEARCH_Books
+  # Authors Endpoint
+
+  /authors:
+
+    get:
+      summary: Get list of authors
+      description: Retrieves a paginated collection of authors registered in the system.
+      operationId: getAuthorResourceCollection
+      tags:
+        - Authors
+      parameters:
+        - name: firstPage
+          in: query
+          description: Requested page (first page is page 1). If not specified 1 is
+            used. [Cannot be negative or zero]
+          schema:
+            $ref: '#/components/schemas/firstPage'
+        - name: pageSize
+          in: query
+          description: Number of retrieved elements per page. if not specified 10 is
+            used. [Cannot be less than 1]
+          schema:
+            $ref: '#/components/schemas/pageSize'
+        - name: sort
+          in: query
+          description: 'Sort of the query. [sort=+id] will order asc by id, or [sort=+id] desc by id). Default unsorted.'
+          schema:
+            $ref: '#/components/schemas/sort'
+      responses:
+        200:
+          description: List of authors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResourceCollectionResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Authors
+
+    post:
+      summary: Create an author
+      description: Allows you to register a new author in the system with the provided information.
+      operationId: createAuthor
+      tags:
+        - Authors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorResourceRequest'
+      responses:
+        201:
+          description: Author created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_POST_Authors
+
+  /authors/{id}:
+
+    get:
+      summary: Get author by ID
+      description: Retrieves the details of a specific author using their unique identifier.
+      operationId: getAuthorById
+      tags:
+        - Authors
+      parameters:
+        - name: id
+          description: Private Author identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/authorId'
+      responses:
+        200:
+          description: Author details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Authors
+
+    put:
+      summary: Update author by ID
+      description: Allows you to modify the information of an existing author using their unique identifier.
+      operationId: updateAuthorById
+      tags:
+        - Authors
+      parameters:
+        - name: id
+          description: Private Author identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/authorId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorResourceRequest'
+      responses:
+        200:
+          description: Author updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_POST_Authors
+
+    delete:
+      summary: Delete author by ID
+      description: Deletes a specific author from the system using their unique identifier.
+      operationId: deleteAuthorById
+      tags:
+        - Authors
+      parameters:
+        - name: id
+          description: Private Author identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/authorId'
+      responses:
+        204:
+          description: Author deleted
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_DELETE_Authors
+
+  /authors/publicIds:
+
+    post:
+      summary: Search authors by array of publicId
+      description: Allows you to retrieve a collection of authors filtered by an array of public identifiers.
+      operationId: searchAuthorsByPublicIds
+      tags:
+        - Authors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publicIds:
+                  $ref: '#/components/schemas/publicIds'
+      responses:
+        200:
+          description: Authors found by publicId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResourceCollection'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_SEARCH_Authors
+
+  # Publishers Endpoint
+
+  /publishers:
+
+    get:
+      summary: Get list of publishers
+      description: Retrieves a paginated collection of publishers registered in the system.
+      operationId: getPublisherResourceCollection
+      tags:
+        - Publishers
+      parameters:
+        - name: firstPage
+          in: query
+          description: Requested page (first page is page 1). If not specified 1 is
+            used. [Cannot be negative or zero]
+          schema:
+            $ref: '#/components/schemas/firstPage'
+        - name: pageSize
+          in: query
+          description: Number of retrieved elements per page. if not specified 10 is
+            used. [Cannot be less than 1]
+          schema:
+            $ref: '#/components/schemas/pageSize'
+        - name: sort
+          in: query
+          description: 'Sort of the query. [sort=+id] will order asc by id, or [sort=+id] desc by id). Default unsorted.'
+          schema:
+            $ref: '#/components/schemas/sort'
+      responses:
+        200:
+          description: List of publishers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublisherResourceCollectionResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Publishers
+
+    post:
+      summary: Create a publisher
+      description: Allows you to register a new publisher in the system with the provided information.
+      operationId: createPublisher
+      tags:
+        - Publishers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublisherResourceRequest'
+      responses:
+        201:
+          description: Publisher created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublisherResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_POST_Publishers
+
+  /publishers/{id}:
+
+    get:
+      summary: Get publisher by ID
+      description: Retrieves the details of a specific publisher using its unique identifier.
+      operationId: getPublisherById
+      tags:
+        - Publishers
+      parameters:
+        - name: id
+          description: Private Publisher identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/publisherId'
+      responses:
+        200:
+          description: Publisher details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublisherResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_GET_Publishers
+
+    put:
+
+      summary: Update publisher by ID
+      description: Allows you to modify the information of an existing publisher using its unique identifier.
+      operationId: updatePublisherById
+      tags:
+        - Publishers
+      parameters:
+        - name: id
+          description: Private Publisher identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/publisherId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublisherResourceRequest'
+      responses:
+        200:
+          description: Publisher updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublisherResourceResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_POST_Publishers
+
+    delete:
+      summary: Delete publisher by ID
+      description: Deletes a specific publisher from the system using its unique identifier.
+      operationId: deletePublisherById
+      tags:
+        - Publishers
+      parameters:
+        - name: id
+          description: Private Publisher identifier
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/publisherId'
+      responses:
+        204:
+          description: Publisher deleted
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_DELETE_Publishers
+
+  /publishers/publicIds:
+    post:
+      summary: Search publishers by array of publicId
+      description: Allows you to retrieve a collection of publishers filtered by an array of public identifiers.
+      operationId: searchPublishersByPublicIds
+      tags:
+        - Publishers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publicIds:
+                  $ref: '#/components/schemas/publicIds'
+      responses:
+        200:
+          description: Publishers found by publicId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublisherResourceCollection'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResourceResponse'
+      security:
+        - adfs: [ ]
+      x-mercadona-security:
+        operationgroups:
+          - DCNA_SEARCH_Publishers
+
+components:
+  schemas:
+
+    # Common components
+
+    publicId:
+      type: integer
+      format: int64
+      description: Public identifier
+      example: 1
+
+    publicIds:
+      type: array
+      items:
+        $ref: '#/components/schemas/publicId'
+      example: '[1, 2, 3]'
+
+    # Book components
+
+    bookId:
+      type: string
+      format: uuid
+      description: Private Book identifier
+      example: 'bbbbbbb1-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
+
+    title:
+      type: string
+      description: Book title
+      example: 'Cien Años de Soledad'
+
+    authors:
+      type: array
+      description: Authors information
+      items:
+        $ref: '#/components/schemas/AuthorResource'
+
+    publishers:
+      type: array
+      description: Publisher information
+      $ref: '#/components/schemas/PublisherResource'
+
+    coverUrl:
+      type: string
+      description: Book cover url
+      example: 'https://img/soledad.jpg'
+
+    edition:
+      type: string
+      description: Book edition
+      example: '1st'
+
+    price:
+      type: number
+      format: float
+      description: Book price
+      example: 19.99
+
+    languages:
+      type: string
+      description: Book languages
+      example: 'ES'
+
+    epubUrl:
+      type: string
+      description: Book epub url
+      example: 'https://epub/soledad'
+
+    isDigital:
+      type: boolean
+      description: Available in digital?
+      example: true
+
+    isDeleted:
+      type: boolean
+      default: Is deleted?
+      example: false
+
+    # Book Requests
+
+    BookResourceRequest:
+      title: BookResourceRequest
+      type: object
+      properties:
+        publicId:
+          $ref: '#/components/schemas/publicId'
+        title:
+          $ref: '#/components/schemas/title'
+        authorId:
+          $ref: '#/components/schemas/authorId'
+        publisherId:
+          $ref: '#/components/schemas/publisherId'
+        coverUrl:
+          $ref: '#/components/schemas/coverUrl'
+        edition:
+          $ref: '#/components/schemas/edition'
+        price:
+          $ref: '#/components/schemas/price'
+        languages:
+          $ref: '#/components/schemas/languages'
+        epubUrl:
+          $ref: '#/components/schemas/epubUrl'
+        isDigital:
+          $ref: '#/components/schemas/isDigital'
+        isDeleted:
+          $ref: '#/components/schemas/isDeleted'
+
+    # Book Responses
+
+    BookResource:
+      title: BookResource
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/bookId'
+        publicId:
+          $ref: '#/components/schemas/publicId'
+        title:
+          $ref: '#/components/schemas/title'
+        authors:
+          $ref: '#/components/schemas/authors'
+        publisher:
+          $ref: '#/components/schemas/PublisherResource'
+        coverUrl:
+          $ref: '#/components/schemas/coverUrl'
+        edition:
+          $ref: '#/components/schemas/edition'
+        price:
+          $ref: '#/components/schemas/price'
+        languages:
+          $ref: '#/components/schemas/languages'
+        epubUrl:
+          $ref: '#/components/schemas/epubUrl'
+        isDigital:
+          $ref: '#/components/schemas/isDigital'
+        isDeleted:
+          $ref: '#/components/schemas/isDeleted'
+
+    BookResourceResponse:
+      title: BookResourceResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BookResource'
+
+    BookResourceCollection:
+      title: BookResourceCollection
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookResource'
+
+    BookResourceCollectionResponse:
+      title: BookResourceCollectionResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BookResourceCollection'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # Author components
+
+    authorId:
+      type: string
+      format: uuid
+      description: Private Author identifier
+      example: 'aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+
+    authorName:
+      type: string
+      example: 'Gabriel García Márquez'
+
+    birthday:
+      type: string
+      format: date
+      example: '1927-03-06'
+
+    urlImage:
+      type: string
+      example: 'https://img/garciamarquez.jpg'
+
+    # Author requests
+
+    AuthorResourceRequest:
+      title: AuthorResourceRequest
+      type: object
+      properties:
+        publicId:
+          $ref: '#/components/schemas/publicId'
+        name:
+          $ref: '#/components/schemas/authorName'
+        birthday:
+          $ref: '#/components/schemas/birthday'
+        urlImage:
+          $ref: '#/components/schemas/urlImage'
+
+    # Author Responses
+
+    AuthorResource:
+      title: AuthorResource
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/authorId'
+        publicId:
+          $ref: '#/components/schemas/publicId'
+        name:
+          $ref: '#/components/schemas/authorName'
+        birthday:
+          $ref: '#/components/schemas/birthday'
+        urlImage:
+          $ref: '#/components/schemas/urlImage'
+
+    AuthorResourceResponse:
+      title: AuthorResourceResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuthorResource'
+
+    AuthorResourceCollection:
+      title: AuthorResourceCollection
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorResource'
+
+    AuthorResourceCollectionResponse:
+      title: AuthorResourceCollectionResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuthorResourceCollection'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # Publisher components
+
+    publisherId:
+      type: string
+      format: uuid
+      description: Private Publisher identifier
+      example: '11111111-1111-1111-1111-111111111111'
+
+    publisherName:
+      type: string
+      example: 'Editorial Alpha'
+
+    address:
+      type: string
+      example: 'Av. Central 123, CDMX'
+
+#    geolocalization:
+#      type: object
+#      description: "Geographic point (latitude, longitude)."
+#      properties:
+#        latitude:
+#          type: number
+#          format: double
+#          example: 19.4326
+#        longitude:
+#          type: number
+#          format: double
+#          example: -99.1332
+#      required:
+#        - latitude
+#        - longitude
+
+    # Publisher Requests
+
+    PublisherResourceRequest:
+      title: PublisherResourceResponse
+      type: object
+      properties:
+        publicId:
+          $ref: '#/components/schemas/publicId'
+        name:
+          $ref: '#/components/schemas/publisherName'
+        address:
+          $ref: '#/components/schemas/address'
+#        geolocalization:
+#          $ref: '#/components/schemas/geolocalization'
+
+    # Publisher Responses
+
+    PublisherResource:
+      title: PublisherResource
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/publisherId'
+        publicId:
+          $ref: '#/components/schemas/publicId'
+        name:
+          $ref: '#/components/schemas/publisherName'
+        address:
+          $ref: '#/components/schemas/address'
+#        geolocalization:
+#          $ref: '#/components/schemas/geolocalization'
+
+    PublisherResourceResponse:
+      title: PublisherResourceResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PublisherResource'
+
+    PublisherResourceCollection:
+      title: PublisherResourceCollection
+      type: object
+      properties:
+        publishers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublisherResource'
+
+    PublisherResourceCollectionResponse:
+      title: PublisherResourceCollectionResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PublisherResourceCollection'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    # Error components
+
+    errorCode:
+      type: string
+
+    errorDescription:
+      type: string
+
+    errorDetails:
+      type: array
+      items:
+        type: string
+
+    # Error resources
+
+    ErrorResource:
+      title: ErrorResource
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/errorCode'
+        description:
+          $ref: '#/components/schemas/errorDescription'
+        details:
+          $ref: '#/components/schemas/errorDetails'
+
+    # Error responses
+
+    ErrorResourceResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorResource'
+
+    # Pagination components
+
+    firstPage:
+      type: integer
+      format: int32
+      default: 1
+      description: Requested page (first page is page 1). If not specified 1 is used. [Cannot be negative or zero]
+
+    pageSize:
+      type: integer
+      format: int32
+      default: 10
+      description: Number of retrieved elements per page. if not specified 10 is used. [Cannot be less than 1]
+
+    sort:
+      type: string
+      description: 'Sort of the query. [sort=+id] will order asc by id, or [sort=+id] desc by id). Default unsorted.'
+
+    requestedPage:
+      type: integer
+      format: int32
+      description: Requested page (first page is page 1). If not specified 1 is used. [Cannot be negative or zero]
+
+    requestedSize:
+      type: integer
+      format: int32
+      description: Number of retrieved elements per page. if not specified 10 is used. [Cannot be less than 1]
+
+    retrievedResults:
+      type: integer
+      format: int32
+      description: Number of results retrieved in the current request.
+
+    totalResults:
+      type: integer
+      format: int64
+      description: Total number of results available across all pages.
+
+    nextPage:
+      type: string
+      description: URL or token for next page
+
+    previousPage:
+      type: string
+      description: URL or token for previous page
+
+    # Pagination Response
+
+    Pagination:
+      type: object
+      properties:
+        requestedPage:
+          $ref: '#/components/schemas/requestedPage'
+        requestedSize:
+          $ref: '#/components/schemas/requestedSize'
+        retrievedResults:
+          $ref: '#/components/schemas/retrievedResults'
+        totalResults:
+          $ref: '#/components/schemas/totalResults'
+        nextPage:
+          $ref: '#/components/schemas/nextPage'
+        previousPage:
+          $ref: '#/components/schemas/previousPage'
+
+  # Security Components
+
+  securitySchemes:
+    adfs:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ""
+          scopes: { }
+    aad:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ""
+          scopes: { }

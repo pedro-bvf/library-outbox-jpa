@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>library-back-web-books-postgres-repository</artifactId>
+  <packaging>jar</packaging>
+  <name>library-back-web-books-postgres-repository</name>
+
+  <parent>
+    <groupId>com.mercadona.library.books</groupId>
+    <artifactId>library-back-web-books</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.mercadona.library.books</groupId>
+      <artifactId>library-back-web-books-application</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-database-postgresql</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+    </dependency>
+
+    <!-- Postgres -->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+    </dependency>
+
+    <!-- Outbox Pattern with Avro and JPA -->
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.confluent</groupId>
+      <artifactId>kafka-avro-serializer</artifactId>
+      <version>7.7.2</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>sql</directory>
+        <includes>
+          <include>**/*.sql</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths combine.children="append">
+                      <path>
+                        <groupId>org.hibernate.orm</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>${hibernate.jpamodelgen.version}</version>
+                      </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+          <!-- Avro code generation -->
+          <plugin>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-maven-plugin</artifactId>
+            <version>1.11.1</version>
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>schema</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <sourceDirectory>${project.basedir}/src/main/resources/avro/</sourceDirectory>
+              <outputDirectory>${project.basedir}/target/generated-sources/avro/</outputDirectory>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.6.0</version>
+            <executions>
+              <execution>
+                <id>add-avro-source</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${project.basedir}/target/generated-sources/avro/</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+    </build>
+
+</project>

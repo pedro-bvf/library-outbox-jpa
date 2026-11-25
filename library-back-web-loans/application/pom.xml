@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>library-back-web-loans-application</artifactId>
+  <packaging>jar</packaging>
+  <name>library-back-web-loans-application</name>
+
+  <parent>
+    <groupId>com.mercadona.library.loans</groupId>
+    <artifactId>library-back-web-loans</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <dependencies>
+
+    <!-- Needed for Page/Pageable in the pagination utils (previously transitive via fwkcna-commons-domain) -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.transaction</groupId>
+      <artifactId>jakarta.transaction-api</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.f4b6a3</groupId>
+      <artifactId>tsid-creator</artifactId>
+      <version>5.1.1</version>
+    </dependency>
+
+  </dependencies>
+
+</project>

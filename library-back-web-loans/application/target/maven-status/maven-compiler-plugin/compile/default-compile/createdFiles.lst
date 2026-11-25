@@ -1,0 +1,17 @@
+com/mercadona/library/loans/application/services/BookServiceUseCase.class
+com/mercadona/library/loans/application/ports/driving/LoanServicePort.class
+com/mercadona/library/loans/application/exceptions/EntityNotFoundException.class
+com/mercadona/library/loans/application/services/LoanServiceUseCase.class
+com/mercadona/library/loans/application/ports/driven/LoanRepositoryPort.class
+com/mercadona/library/loans/domain/Customer.class
+com/mercadona/library/loans/application/ports/driving/BookServicePort.class
+com/mercadona/library/loans/application/exceptions/BusinessException.class
+com/mercadona/library/loans/application/utils/pagination/PagedResult.class
+com/mercadona/library/loans/domain/Loan.class
+com/mercadona/library/loans/application/ports/driven/CustomerRepositoryPort.class
+com/mercadona/library/loans/application/ports/driven/BookRepositoryPort.class
+com/mercadona/library/loans/domain/Author.class
+com/mercadona/library/loans/application/utils/pagination/PaginationInfo.class
+com/mercadona/library/loans/application/ports/driven/BookClientPort.class
+com/mercadona/library/loans/domain/Book.class
+com/mercadona/library/loans/domain/BookCatalogEntry.class

@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: library-back-web-loans
+
+  datasource:
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 5
+      idle-timeout: 30000
+      max-lifetime: 2000000
+      connection-timeout: 30000
+
+  jpa:
+    open-in-view: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      adjust-dates-to-context-time-zone: false
+
+# Actuator endpoints configuration
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ info, health, metrics, prometheus ]
+server:
+  port: 8080

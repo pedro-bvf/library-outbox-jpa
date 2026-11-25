@@ -1,0 +1,47 @@
+### Create Example
+< {%
+    import {toIso} from './pre-request.js';
+    request.variables.set('creationTime', toIso());
+%}
+POST http://localhost:8080/examples
+Content-Type: application/json
+
+{
+    "name": "TheExample",
+    "description": "An Example",
+    "creationTime": "{{creationTime}}",
+    "identificationType": "NIE",
+    "identification": "Y6713575G",
+    "numberOfDaysInWeek": 7
+}
+
+### Get examples
+GET http://localhost:8080/examples
+Accept: application/json
+
+### Get example by ID
+GET http://localhost:8080/examples/1
+Accept: application/json
+
+### Update example
+< {%
+    import {toIso} from './pre-request.js';
+    request.variables.set('creationTime', toIso());
+//     Usar {{$isoTimestamp}} para que la fecha esté con el offset Zulú
+%}
+PUT http://localhost:8080/examples/1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "The Amazing Example",
+    "description": "An Example with superpowers",
+    "creationTime": "{{creationTime}}",
+    "identificationType": "DNI",
+    "identification": "11111111H",
+    "numberOfDaysInWeek": 7
+}
+
+### Delete example by ID
+DELETE http://localhost:8080/examples/1
+Accept: application/json

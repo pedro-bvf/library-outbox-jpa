@@ -1,0 +1,4 @@
+com/mercadona/library/availability/domain/BookDTO.class
+com/mercadona/library/availability/application/services/BookServiceUseCase.class
+com/mercadona/library/availability/application/ports/driven/BookRepositoryPort.class
+com/mercadona/library/availability/application/ports/driving/BookConsumerPort.class

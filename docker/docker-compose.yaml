@@ -1,0 +1,163 @@
+version: '3.7'
+
+services:
+  postgres16:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: root
+      POSTGRES_MULTIPLE_DATABASES: books,loans
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - ./database/sql-scripts:/tmp
+    ports:
+      - "5433:5432"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.7.4
+    platform: linux/amd64   # Note: Uncomment in MacBook M2
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - local
+
+  kafka:
+    image: confluentinc/cp-enterprise-kafka:7.7.4
+    platform: linux/amd64   # Note: Uncomment in MacBook M2
+    hostname: kafka
+    user: "1000:1000"
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_HEAP_OPTS: -Xmx3G -Xms1G
+      KAFKA_BROKER_ID: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_LOG_RETENTION_MS: -1
+      KAFKA_MESSAGE_MAX_BYTES: 10485880
+      KAFKA_NUM_PARTITIONS: 1
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka:9092
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: "true"
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+    networks:
+      - local
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.7.4
+    platform: linux/amd64   # Note: Uncomment in MacBook M2
+    hostname: schema-registry
+    ports:
+      - "9081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:9092'
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+      SCHEMA_REGISTRY_MODE_MUTABILITY: "true"
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - local
+
+  rest-proxy:
+    image: confluentinc/cp-kafka-rest:7.7.4
+    platform: linux/amd64   # Note: Uncomment in MacBook M2
+    hostname: rest-proxy
+    ports:
+      - "9082:8082"
+    environment:
+      KAFKA_REST_HOST_NAME: rest-proxy
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+      - kafka
+      - zookeeper
+      - schema-registry
+    networks:
+      - local
+
+  akhq:
+    image: tchiotludo/akhq:0.26.0
+    restart: on-failure
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka:9092"
+              schema-registry:
+                url: "http://schema-registry:8081"
+    ports:
+      - "9089:8080"
+    depends_on:
+      - rest-proxy
+      - kafka
+      - zookeeper
+      - schema-registry
+    networks:
+      - local
+
+  init-kafka:
+    image: confluentinc/cp-kafka:7.7.4
+    depends_on:
+      - akhq
+    entrypoint: [ '/bin/sh', '-c' ]
+    volumes:
+      - ./kafka:/tmp/kafka
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:9092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic library.availability.event.restrictedout.v0.canonical.cpd --replication-factor 1 --partitions 1 --config cleanup.policy=compact --config delete.retention.ms=60000 --config segment.ms=60000 --config min.cleanable.dirty.ratio=0.01
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:9092 --list
+      
+      echo -e 'Creating Schemas'
+      cd /tmp/kafka
+      ./register-schemas.sh
+      "
+    networks:
+      - local
+
+  kpow:
+    image: factorhouse/kpow-ce:latest
+    environment:
+      BOOTSTRAP: kafka:9092
+      SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      LICENSE_ID: ${KPOW_LICENSE_ID}
+      LICENSE_CODE: ${KPOW_LICENSE_CODE}
+      LICENSEE: ${KPOW_LICENSEE}
+      LICENSE_EXPIRY: ${KPOW_LICENSE_EXPIRY}
+      LICENSE_SIGNATURE: ${KPOW_LICENSE_SIGNATURE}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka
+      - schema-registry
+    networks:
+      - local
+
+
+networks:
+  local:
+    name: blended-network

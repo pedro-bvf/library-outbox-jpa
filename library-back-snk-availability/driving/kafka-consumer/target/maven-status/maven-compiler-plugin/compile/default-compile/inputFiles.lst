@@ -1,0 +1,5 @@
+/Users/pferrevi/Desktop/courses/CRE089 - Spring Boot/library-outbox-jpa/library-back-snk-availability/driving/kafka-consumer/target/generated-sources/avro/com/mercadona/fwk/sbo/library/book/BookAvailabilityEventValue.java
+/Users/pferrevi/Desktop/courses/CRE089 - Spring Boot/library-outbox-jpa/library-back-snk-availability/driving/kafka-consumer/src/main/java/com/mercadona/library/availability/consumer/adapters/KafkaConsumerConfig.java
+/Users/pferrevi/Desktop/courses/CRE089 - Spring Boot/library-outbox-jpa/library-back-snk-availability/driving/kafka-consumer/src/main/java/com/mercadona/library/availability/consumer/mappers/BookEventMapper.java
+/Users/pferrevi/Desktop/courses/CRE089 - Spring Boot/library-outbox-jpa/library-back-snk-availability/driving/kafka-consumer/target/generated-sources/avro/com/mercadona/fwk/sbo/library/book/BookAvailabilityEventKey.java
+/Users/pferrevi/Desktop/courses/CRE089 - Spring Boot/library-outbox-jpa/library-back-snk-availability/driving/kafka-consumer/src/main/java/com/mercadona/library/availability/consumer/adapters/BookConsumerAdapter.java

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>library-back-web-loans-rest-client</artifactId>
+  <packaging>jar</packaging>
+  <name>library-back-web-loans-rest-client</name>
+
+  <parent>
+    <groupId>com.mercadona.library.loans</groupId>
+    <artifactId>library-back-web-loans</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.mercadona.library.loans</groupId>
+      <artifactId>library-back-web-loans-application</artifactId>
+    </dependency>
+
+    <!-- Needed for WebClient, previously transitive via fwkcna-starter-auth-webclient -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+
+  </dependencies>
+
+</project>

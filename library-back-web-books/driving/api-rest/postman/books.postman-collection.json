@@ -1,0 +1,586 @@
+{
+	"info": {
+		"_postman_id": "523a7663-8f01-4131-92db-ad297b4c50de",
+		"name": "books",
+		"description": "Books API collection for library-back-web-books",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"const book = jsonPayload.data;",
+							"",
+							"postman.setEnvironmentVariable(\"id\", book.id);",
+							"",
+							"pm.test(\"should have 201 status\", () => {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"should have a JSON body\", () => {",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"should have the created body\", () => {",
+							"    pm.expect(book).to.have.property(\"id\");",
+							"    pm.expect(book.publicId).to.eql(101);",
+							"    pm.expect(book.title).to.eql(\"Fahrenheit 451\");",
+							"    pm.expect(book.publisher.id).to.eql(pm.environment.get(\"publisherId\"));",
+							"    pm.expect(book.authors).to.have.lengthOf(1);",
+							"    pm.expect(book.authors[0].id).to.eql(pm.environment.get(\"authorId\"));",
+							"    pm.expect(book.price).to.eql(15.5);",
+							"    pm.expect(book.isDigital).to.eql(true);",
+							"    pm.expect(book.isDeleted).to.eql(false);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"publicId\": 101,\n    \"title\": \"Fahrenheit 451\",\n    \"authors\": [\"{{authorId}}\"],\n    \"publisherId\": \"{{publisherId}}\",\n    \"coverUrl\": \"https://img/fahrenheit451.jpg\",\n    \"edition\": \"1st\",\n    \"price\": 15.5,\n    \"languages\": \"EN\",\n    \"epubUrl\": \"https://epub/fahrenheit451\",\n    \"isDigital\": true,\n    \"isDeleted\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/books",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					]
+				},
+				"description": "This method creates a new book with the given body information. authorId and publisherId must reference existing records (see seed data in V1.0.1__insert-dataset-books.sql)."
+			},
+			"response": []
+		},
+		{
+			"name": "Get a page of books",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"const booksData = jsonPayload.data;",
+							"",
+							"pm.test(\"should have 200 status\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"should have a JSON body\", () => {",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"should retrieve an array of books\", () => {",
+							"    pm.expect(booksData).to.have.property(\"books\");",
+							"    pm.expect(jsonPayload).to.have.property(\"pagination\");",
+							"",
+							"    const books = booksData.books;",
+							"    pm.expect(books).to.be.a(\"array\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books?firstPage=1&pageSize=10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "firstPage",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "This method retrieves a paginated collection of books"
+			},
+			"response": []
+		},
+		{
+			"name": "Get a page of books Sort",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"const booksData = jsonPayload.data;",
+							"",
+							"pm.test(\"should have 200 status\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"should have a JSON body\", () => {",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"should retrieve an array of books\", () => {",
+							"    pm.expect(booksData).to.have.property(\"books\");",
+							"    pm.expect(jsonPayload).to.have.property(\"pagination\");",
+							"",
+							"    const books = booksData.books;",
+							"    pm.expect(books).to.be.a(\"array\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books?firstPage=1&pageSize=10&sort=-title",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					],
+					"query": [
+						{
+							"key": "firstPage",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "-title"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get book by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"const book = jsonPayload.data;",
+							"",
+							"pm.test(\"should have 200 status\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"should have a JSON body\", () => {",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"should have the correct book\", () => {",
+							"    pm.expect(book.id).to.eql(pm.environment.get(\"id\"));",
+							"    pm.expect(book.title).to.eql(\"Fahrenheit 451\");",
+							"    pm.expect(book.publicId).to.eql(101);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"{{id}}"
+					]
+				},
+				"description": "This method retrieves a book defined by a specific id"
+			},
+			"response": []
+		},
+		{
+			"name": "Not found error when getting a non-existing book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"",
+							"const nonExistingId = pm.environment.get(\"nonExistingId\");",
+							"",
+							"pm.test(\"should have 404 status\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"should have the correct payload\", () => {",
+							"",
+							"    pm.expect(jsonPayload).to.have.property(\"error\");",
+							"    pm.expect(jsonPayload.error).to.be.a(\"object\");",
+							"",
+							"    pm.expect(jsonPayload.error.code).to.eql(\"C01\");",
+							"    pm.expect(jsonPayload.error.description).to.eql(`Book with id ${nonExistingId} not found.`);",
+							"    pm.expect(jsonPayload.error.details[0]).to.eql(`Book with id ${nonExistingId} not found.`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/{{nonExistingId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"{{nonExistingId}}"
+					]
+				},
+				"description": "This method retrieves a book defined by a specific id"
+			},
+			"response": []
+		},
+		{
+			"name": "Update a book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"const book = jsonPayload.data;",
+							"",
+							"postman.setEnvironmentVariable(\"id\", book.id);",
+							"",
+							"pm.test(\"should have 200 status\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"should have a JSON body\", () => {",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"should have the updated body\", () => {",
+							"    pm.expect(book).to.have.property(\"id\");",
+							"    pm.expect(book.title).to.eql(\"Fahrenheit 451 (Anniversary Edition)\");",
+							"    pm.expect(book.edition).to.eql(\"2nd\");",
+							"    pm.expect(book.price).to.eql(18.0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"publicId\": 101,\n    \"title\": \"Fahrenheit 451 (Anniversary Edition)\",\n    \"authors\": [\"{{authorId}}\"],\n    \"publisherId\": \"{{publisherId}}\",\n    \"coverUrl\": \"https://img/fahrenheit451.jpg\",\n    \"edition\": \"2nd\",\n    \"price\": 18.0,\n    \"languages\": \"EN\",\n    \"epubUrl\": \"https://epub/fahrenheit451\",\n    \"isDigital\": true,\n    \"isDeleted\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/books/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"{{id}}"
+					]
+				},
+				"description": "This method updates an existing book identified by its id"
+			},
+			"response": []
+		},
+		{
+			"name": "Not found error when updating a non-existing book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"",
+							"const nonExistingId = pm.environment.get(\"nonExistingId\");",
+							"",
+							"pm.test(\"should have 404 status\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"should have the correct payload\", () => {",
+							"",
+							"    pm.expect(jsonPayload).to.have.property(\"error\");",
+							"    pm.expect(jsonPayload.error).to.be.a(\"object\");",
+							"",
+							"    pm.expect(jsonPayload.error.code).to.eql(\"C01\");",
+							"    pm.expect(jsonPayload.error.description).to.eql(`Book with id ${nonExistingId} not found.`);",
+							"    pm.expect(jsonPayload.error.details[0]).to.eql(`Book with id ${nonExistingId} not found.`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"publicId\": 101,\n    \"title\": \"Fahrenheit 451 (Anniversary Edition)\",\n    \"authors\": [\"{{authorId}}\"],\n    \"publisherId\": \"{{publisherId}}\",\n    \"coverUrl\": \"https://img/fahrenheit451.jpg\",\n    \"edition\": \"2nd\",\n    \"price\": 18.0,\n    \"languages\": \"EN\",\n    \"epubUrl\": \"https://epub/fahrenheit451\",\n    \"isDigital\": true,\n    \"isDeleted\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/books/{{nonExistingId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"{{nonExistingId}}"
+					]
+				},
+				"description": "This method updates an existing book identified by its id"
+			},
+			"response": []
+		},
+		{
+			"name": "Search books by publicIds",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"",
+							"pm.test(\"should have 200 status\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"should have a JSON body\", () => {",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"should retrieve the books matching the given publicIds\", () => {",
+							"    pm.expect(jsonPayload).to.have.property(\"books\");",
+							"    pm.expect(jsonPayload.books).to.be.a(\"array\");",
+							"    pm.expect(jsonPayload.books.length).to.be.at.least(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"publicIds\": [1, 2, 3]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/books/publicIds",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"publicIds"
+					]
+				},
+				"description": "This method retrieves the books whose publicId is in the given array"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete book by its id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should have 204 status\", () => {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/books/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Not found error when deleting book by a non-existing id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonPayload = pm.response.json();",
+							"",
+							"const nonExistingId = pm.environment.get(\"nonExistingId\");",
+							"",
+							"pm.test(\"should have 404 status\", () => {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"should have the correct payload\", () => {",
+							"",
+							"    pm.expect(jsonPayload).to.have.property(\"error\");",
+							"    pm.expect(jsonPayload.error).to.be.a(\"object\");",
+							"",
+							"    pm.expect(jsonPayload.error.code).to.eql(\"C01\");",
+							"    pm.expect(jsonPayload.error.description).to.eql(`Book with id ${nonExistingId} not found.`);",
+							"    pm.expect(jsonPayload.error.details[0]).to.eql(`Book with id ${nonExistingId} not found.`);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/books/{{nonExistingId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"{{nonExistingId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "nonExistingId",
+			"value": "99999999-9999-9999-9999-999999999999"
+		},
+		{
+			"key": "authorId",
+			"value": "aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+		},
+		{
+			"key": "publisherId",
+			"value": "11111111-1111-1111-1111-111111111111"
+		}
+	]
+}

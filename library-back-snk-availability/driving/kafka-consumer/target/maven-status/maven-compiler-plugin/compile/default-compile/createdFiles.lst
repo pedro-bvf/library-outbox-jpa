@@ -1,0 +1,8 @@
+com/mercadona/library/availability/consumer/mappers/BookEventMapper.class
+com/mercadona/library/availability/consumer/adapters/BookConsumerAdapter.class
+com/mercadona/fwk/sbo/library/book/BookAvailabilityEventKey$Builder.class
+com/mercadona/library/availability/consumer/mappers/BookEventMapperImpl.class
+com/mercadona/fwk/sbo/library/book/BookAvailabilityEventValue.class
+com/mercadona/fwk/sbo/library/book/BookAvailabilityEventValue$Builder.class
+com/mercadona/library/availability/consumer/adapters/KafkaConsumerConfig.class
+com/mercadona/fwk/sbo/library/book/BookAvailabilityEventKey.class
