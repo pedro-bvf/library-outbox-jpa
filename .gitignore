@@ -1,7 +1,1 @@
 .mcp.json
-# Atenea skills management
-.atenea/plugins.json
-.claude/skills/atenea-*
-.claude/skills/commons-*
-.claude/skills/fwk-*
-.claude/skills/architecture-*
