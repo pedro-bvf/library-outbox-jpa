@@ -9,7 +9,7 @@
   <name>library-back-snk-availability-application</name>
 
   <parent>
-    <groupId>com.mercadona.library.availability</groupId>
+    <groupId>com.library.availability</groupId>
     <artifactId>library-back-snk-availability</artifactId>
     <version>1.0.0</version>
   </parent>

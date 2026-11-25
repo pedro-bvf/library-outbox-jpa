@@ -1,0 +1,88 @@
+# Base: maven + git + java + intellij + eclipse + vscode + osx + ci-pipelines + helm
+
+### OS ###
+.DS_Store
+**/.DS_Store
+
+### Git merge/backups ###
+*.orig
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
+
+### IntelliJ / JetBrains ###
+.idea/
+*.iml
+*.ipr
+*.iws
+/out
+.idea_modules/
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+### VS Code ###
+.vscode/
+.vscode-test/
+*.code-workspace
+.history/
+
+### Java ###
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+hs_err_pid*
+
+### Package artifacts ###
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.classpath
+.project
+.checkstyle
+*.launch
+
+### CI Pipelines ###
+Checkmarx/Reports
+
+### Helm ###
+**/requirements.lock
+**/charts/*.tgz
+**/charts/**/*.tgz

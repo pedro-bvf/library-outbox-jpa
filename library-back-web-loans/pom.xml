@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.mercadona.library.loans</groupId>
+  <groupId>com.library.loans</groupId>
   <artifactId>library-back-web-loans</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
@@ -20,22 +20,22 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.mercadona.library.loans</groupId>
+        <groupId>com.library.loans</groupId>
         <artifactId>library-back-web-loans-api-rest</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.mercadona.library.loans</groupId>
+        <groupId>com.library.loans</groupId>
         <artifactId>library-back-web-loans-application</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.mercadona.library.loans</groupId>
+        <groupId>com.library.loans</groupId>
         <artifactId>library-back-web-loans-postgres-repository</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.mercadona.library.loans</groupId>
+        <groupId>com.library.loans</groupId>
         <artifactId>library-back-web-loans-rest-client</artifactId>
         <version>${project.version}</version>
       </dependency>

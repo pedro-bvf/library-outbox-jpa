@@ -3,7 +3,7 @@
     <option name="ACTIVE_PROFILES" value="local" />
     <module name="library-back-snk-availability-boot" />
     <shortenClasspath name="ARGS_FILE" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.mercadona.library.availability.Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.library.availability.Application" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false" />
       <option name="IS_SUBST" value="false" />

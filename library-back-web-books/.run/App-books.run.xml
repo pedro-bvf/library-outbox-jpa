@@ -3,7 +3,7 @@
     <option name="ACTIVE_PROFILES" value="local" />
     <module name="library-back-web-books-boot" />
     <shortenClasspath name="ARGS_FILE" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.mercadona.library.books.Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.library.books.Application" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false" />
       <option name="IS_SUBST" value="false" />

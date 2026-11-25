@@ -8,7 +8,7 @@ spec:
     apiFileName: books-openapi-v3.yaml
     type:
       fwkSpringBoot:
-        groupId: com.mercadona.library.web-books
+        groupId: com.library.web-books
         artifactId: books-api
-        package: com.mercadona.library.api.web-books
+        package: com.library.api.web-books
         interfacesWithTags: false

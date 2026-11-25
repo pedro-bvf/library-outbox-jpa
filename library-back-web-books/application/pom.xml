@@ -7,7 +7,7 @@
   <name>library-back-web-books-application</name>
 
   <parent>
-    <groupId>com.mercadona.library.books</groupId>
+    <groupId>com.library.books</groupId>
     <artifactId>library-back-web-books</artifactId>
     <version>1.0.0</version>
   </parent>

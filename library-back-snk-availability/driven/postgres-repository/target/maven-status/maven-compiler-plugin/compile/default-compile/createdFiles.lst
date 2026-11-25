@@ -1,6 +1,0 @@
-com/mercadona/library/availability/repositories/config/BookRepositoryConfig.class
-com/mercadona/library/availability/repositories/mappers/BookMapper.class
-com/mercadona/library/availability/repositories/adapters/BookRepositoryAdapter.class
-com/mercadona/library/availability/repositories/BookMOJpaRepository.class
-com/mercadona/library/availability/repositories/models/BookMO.class
-com/mercadona/library/availability/repositories/mappers/BookMapperImpl.class

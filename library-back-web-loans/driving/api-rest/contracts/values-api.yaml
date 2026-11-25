@@ -8,7 +8,7 @@ spec:
     apiFileName: loans-openapi-v3.yaml
     type:
       fwkSpringBoot:
-        groupId: com.mercadona.library.web-loans
+        groupId: com.library.web-loans
         artifactId: loans-api
-        package: com.mercadona.library.api.web-loans
+        package: com.library.api.web-loans
         interfacesWithTags: false

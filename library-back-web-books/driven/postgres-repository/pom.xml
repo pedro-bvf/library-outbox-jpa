@@ -9,7 +9,7 @@
   <name>library-back-web-books-postgres-repository</name>
 
   <parent>
-    <groupId>com.mercadona.library.books</groupId>
+    <groupId>com.library.books</groupId>
     <artifactId>library-back-web-books</artifactId>
     <version>1.0.0</version>
     <relativePath>../../pom.xml</relativePath>
@@ -18,7 +18,7 @@
   <dependencies>
 
     <dependency>
-      <groupId>com.mercadona.library.books</groupId>
+      <groupId>com.library.books</groupId>
       <artifactId>library-back-web-books-application</artifactId>
     </dependency>
 

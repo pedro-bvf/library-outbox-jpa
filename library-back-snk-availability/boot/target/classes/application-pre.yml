@@ -1,5 +1,0 @@
-logging:
-  file:
-    path: logs
-    name: logs/application-pre.log
-

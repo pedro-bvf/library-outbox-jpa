@@ -7,7 +7,7 @@
   <name>library-back-web-loans-application</name>
 
   <parent>
-    <groupId>com.mercadona.library.loans</groupId>
+    <groupId>com.library.loans</groupId>
     <artifactId>library-back-web-loans</artifactId>
     <version>1.0.0</version>
   </parent>

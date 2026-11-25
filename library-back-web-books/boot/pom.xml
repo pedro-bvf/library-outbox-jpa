@@ -10,19 +10,19 @@
 
 
   <parent>
-    <groupId>com.mercadona.library.books</groupId>
+    <groupId>com.library.books</groupId>
     <artifactId>library-back-web-books</artifactId>
     <version>1.0.0</version>
   </parent>
 
   <dependencies>
     <dependency>
-      <groupId>com.mercadona.library.books</groupId>
+      <groupId>com.library.books</groupId>
       <artifactId>library-back-web-books-api-rest</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>com.mercadona.library.books</groupId>
+      <groupId>com.library.books</groupId>
       <artifactId>library-back-web-books-postgres-repository</artifactId>
     </dependency>
 
