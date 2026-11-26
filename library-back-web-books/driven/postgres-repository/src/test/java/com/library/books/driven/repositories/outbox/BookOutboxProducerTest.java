@@ -65,7 +65,7 @@ class BookOutboxProducerTest {
 
   @Test
   void publishNext_publishesTombstoneWhenEventIsTombstone() {
-    var event = BookOutboxEntity.tombstone(43L);
+    var event = BookOutboxEntity.deleted(43L);
     when(repository.findFirstByProcessedAtIsNullOrderByIdAsc()).thenReturn(Optional.of(event));
     when(kafka.send(eq(TOPIC), any(), any())).thenReturn(CompletableFuture.completedFuture(null));
 

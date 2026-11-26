@@ -1,8 +1,7 @@
 CREATE TABLE book_availability_outbox (
   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   public_id bigint NOT NULL,
-  available boolean NOT NULL,
-  tombstone boolean NOT NULL DEFAULT false,
+  event_type varchar(20) NOT NULL,
   processed_at timestamptz
 );
 

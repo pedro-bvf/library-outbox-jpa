@@ -1,5 +1,6 @@
 package com.library.books.driven.repositories.outbox;
 
+import com.library.books.driven.repositories.models.BookOutboxEventType;
 import com.mercadona.fwk.sbo.library.book.BookAvailabilityEventKey;
 import com.mercadona.fwk.sbo.library.book.BookAvailabilityEventValue;
 import java.time.Instant;
@@ -32,11 +33,13 @@ public class BookOutboxProducer {
     log.debug("Publishing outbox event {} for book {}", event.getId(), event.getPublicId());
 
     var key = BookAvailabilityEventKey.newBuilder().setPublicId(event.getPublicId()).build();
-    BookAvailabilityEventValue value = event.getTombstone() ? null
-        : BookAvailabilityEventValue.newBuilder()
-            .setPublicId(event.getPublicId())
-            .setAvailable(event.getAvailable())
-            .build();
+    BookAvailabilityEventValue value = switch (BookOutboxEventType.valueOf(event.getEventType())) {
+      case DELETED -> null;
+      case AVAILABLE -> BookAvailabilityEventValue.newBuilder()
+          .setPublicId(event.getPublicId()).setAvailable(true).build();
+      case UNAVAILABLE -> BookAvailabilityEventValue.newBuilder()
+          .setPublicId(event.getPublicId()).setAvailable(false).build();
+    };
 
     try {
       kafka.send(topic, key, value).get();
@@ -50,8 +53,7 @@ public class BookOutboxProducer {
     }
     event.setProcessedAt(Instant.now());
     repository.save(event);
-    log.info("Published and marked outbox event {} for book {} as processed ({})",
-        event.getId(), event.getPublicId(),
-        event.getTombstone() ? "tombstone" : "available=" + event.getAvailable());
+    log.info("Published and marked outbox event {} for book {} as processed (eventType={})",
+        event.getId(), event.getPublicId(), event.getEventType());
   }
 }

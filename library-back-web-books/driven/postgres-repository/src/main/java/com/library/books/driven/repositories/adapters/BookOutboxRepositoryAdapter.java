@@ -19,6 +19,6 @@ public class BookOutboxRepositoryAdapter implements BookOutboxPublisherPort {
 
   @Override
   public void deleteBookOutbox(BookDTO book) {
-    repository.save(BookOutboxEntity.tombstone(book.publicId()));
+    repository.save(BookOutboxEntity.deleted(book.publicId()));
   }
 }

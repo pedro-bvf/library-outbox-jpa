@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookOutboxEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -19,27 +20,23 @@ public class BookOutboxEntity {
   @Column(name = "public_id", nullable = false)
   private Long publicId;
 
-  @Column(nullable = false)
-  private Boolean available;
-
-  @Column(nullable = false)
-  private Boolean tombstone;
+  @Column(name = "event_type", nullable = false)
+  private String eventType;
 
   @Setter
   @Column(name = "processed_at")
   private Instant processedAt;
 
-  private BookOutboxEntity(Long publicId, Boolean available, Boolean tombstone) {
+  private BookOutboxEntity(Long publicId, String eventType) {
     this.publicId = publicId;
-    this.available = available;
-    this.tombstone = tombstone;
+    this.eventType = eventType;
   }
 
   public static BookOutboxEntity availabilityChanged(Long publicId, boolean available) {
-    return new BookOutboxEntity(publicId, available, false);
+    return new BookOutboxEntity(publicId, available ? BookOutboxEventType.AVAILABLE.name() : BookOutboxEventType.UNAVAILABLE.name());
   }
 
-  public static BookOutboxEntity tombstone(Long publicId) {
-    return new BookOutboxEntity(publicId, false, true);
+  public static BookOutboxEntity deleted(Long publicId) {
+    return new BookOutboxEntity(publicId, BookOutboxEventType.DELETED.name());
   }
 }

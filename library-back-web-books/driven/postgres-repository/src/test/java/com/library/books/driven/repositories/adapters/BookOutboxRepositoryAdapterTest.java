@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 
 import com.library.books.domain.BookDTO;
 import com.library.books.driven.repositories.models.BookOutboxEntity;
+import com.library.books.driven.repositories.models.BookOutboxEventType;
 import com.library.books.driven.repositories.outbox.BookOutboxRepository;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -31,8 +32,7 @@ class BookOutboxRepositoryAdapterTest {
 
     var saved = capturedEntity();
     assertThat(saved.getPublicId()).isEqualTo(book.publicId());
-    assertThat(saved.getAvailable()).isTrue();
-    assertThat(saved.getTombstone()).isFalse();
+    assertThat(saved.getEventType()).isEqualTo(BookOutboxEventType.AVAILABLE.name());
   }
 
   @Test
@@ -42,8 +42,7 @@ class BookOutboxRepositoryAdapterTest {
     adapter.saveBookOutbox(book);
 
     var saved = capturedEntity();
-    assertThat(saved.getAvailable()).isFalse();
-    assertThat(saved.getTombstone()).isFalse();
+    assertThat(saved.getEventType()).isEqualTo(BookOutboxEventType.UNAVAILABLE.name());
   }
 
   @Test
@@ -54,7 +53,7 @@ class BookOutboxRepositoryAdapterTest {
 
     var saved = capturedEntity();
     assertThat(saved.getPublicId()).isEqualTo(book.publicId());
-    assertThat(saved.getTombstone()).isTrue();
+    assertThat(saved.getEventType()).isEqualTo(BookOutboxEventType.DELETED.name());
   }
 
   private BookOutboxEntity capturedEntity() {
